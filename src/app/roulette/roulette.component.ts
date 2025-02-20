@@ -1,4 +1,5 @@
-import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
+import { Component, ViewChild, ElementRef, OnInit, Input, output } from '@angular/core';
+import { NgIf, NgStyle } from '@angular/common';
 
 import { colors } from '../colors';
 
@@ -31,7 +32,7 @@ function inverse_color(color: string): string {
 
 @Component({
   selector: 'app-roulette',
-  imports: [],
+  imports: [NgIf, NgStyle],
   templateUrl: './roulette.component.html',
   styleUrl: './roulette.component.css'
 })
@@ -39,12 +40,19 @@ export class RouletteComponent implements OnInit {
   // Canvas reference
   @ViewChild("canvas", {static: true}) canvas!: ElementRef<HTMLCanvasElement>;
 
-  // Read only color
+  // Read only color & duration
   readonly stroke_color = '#485D6C';
+  readonly spin_duration = 5; // In seconds
+
+  // Emit winner name
+  winner = output<string>();
 
   // Roulette objects
-  items = ["Joueur 1", "Joueur 2", "Joueur 3", "Joueur 4", "Joueur 5", "Joueur 6",
-           "Joueur 1", "Joueur 2", "Joueur 3", "Joueur 4", "Joueur 5", "Joueur 6"];
+  items: string[] = [];
+  spin_count = 0;
+  spin_visible = true;
+
+  selected_index: number | null = null;
 
   ngOnInit() {
     // Create lobster font
@@ -62,6 +70,25 @@ export class RouletteComponent implements OnInit {
     });
   }
 
+  @Input()
+  set values(new_items: string[]) {
+    this.items = new_items;
+
+    // Reset spint
+    this.spin_count = 0;
+    this.spin_visible = true;
+    this.selected_index = null;
+
+    // Update canvas
+    this.refresh_canvas();
+  }
+
+  // Get angle of one item
+  get_angle(): number {
+    return 2 * Math.PI / this.items.length;
+  }
+
+  // Draw canvas
   refresh_canvas(): void {
     // Get canvas and context
     const canvas_element = (this.canvas.nativeElement as HTMLCanvasElement);
@@ -78,13 +105,30 @@ export class RouletteComponent implements OnInit {
     const x_center = canvas_element.width / 2;
     const y_center = canvas_element.height / 2;
     const radius = Math.min(x_center,  y_center) - 5;
-    const angle = 2 * Math.PI / this.items.length;
+    const angle = this.get_angle();
+
+    // Edge case - avoid empty list error
+    if (this.items.length === 0) {
+      // Draw circle
+      context.beginPath();
+      context.arc(x_center, y_center, radius, 0, 2 * Math.PI, false);
+
+      // Set shape
+      context.fillStyle = "#ECECEC";
+      context.fill();
+
+      context.strokeStyle = this.stroke_color;
+      context.lineWidth = 5;
+      context.stroke();
+
+      return;
+    }
 
     // Draw roulette
     // To fix supperposition issues, the roulette content is displayed first
     let offset = -(Math.PI / 2 + angle / 2);
 
-    for (const [index, _] of this.items.entries()) {
+    for (const index of this.items.keys()) {
       // Draw zone
       context.beginPath();
       context.moveTo(x_center, y_center);
@@ -124,5 +168,38 @@ export class RouletteComponent implements OnInit {
       // Next zone
       offset += angle;
     }
+  }
+
+  // Start spin
+  spin(): void {
+    this.selected_index = Math.floor(Math.random() * this.items.length);
+    this.spin_visible = false;
+    this.spin_count += 1;
+
+    setTimeout(
+        () => {
+          this.spin_visible = true;
+
+          if (this.selected_index !== null)
+            this.winner.emit(this.items[this.selected_index]);
+        },
+        (this.spin_duration + 1) * 1000
+    );
+  }
+
+  // Perform rotation
+  rotate(): Record<string, string> {
+    // No spin if no index
+    if (this.selected_index === null) {
+      return {};
+    }
+
+    // Spin because index
+    const angle = this.spin_count * 20 * Math.PI - this.selected_index * this.get_angle();
+
+    return {
+      "transform": `rotate(${angle}rad)`,
+      "transition": `${this.spin_duration}s`
+    };
   }
 }

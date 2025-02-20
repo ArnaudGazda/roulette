@@ -1,4 +1,6 @@
 <div class="roulette-container">
-    <img src="down-arrow.svg" alt="Select arrow" width="75px" height="75px"/>
-    <canvas #canvas width="600" height="600"></canvas>
+    <img class="arrow" src="down-arrow.svg" alt="Select arrow" width="75px" height="75px"/>
+    <canvas #canvas [ngStyle]="rotate()" width="600" height="600"></canvas>
+    <img class="spin" *ngIf="items.length > 1 && spin_visible" src="spin.svg" alt="Spin" width="75px" height="75px"
+         (click)="spin()" (keydown.enter)="spin()" tabindex="0"/>
 <div>

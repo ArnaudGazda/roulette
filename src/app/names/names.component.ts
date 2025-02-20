@@ -19,6 +19,8 @@ export class NamesComponent {
   add_item(event: Event): void {
     // Add name
     const name = (event.target as HTMLInputElement).value
+
+    if (name === '') return;
     this.items.push(name);
 
     // Clear input
@@ -50,6 +52,9 @@ export class NamesComponent {
 
   // Emit change
   emit_change(): void {
-    this.update.emit(this.items);
+    // A copy is perform as updating an array inplace is not detected as a change
+    // by angular
+    // A reference to this array is hold by this event listener
+    this.update.emit([...this.items]);
   }
 }

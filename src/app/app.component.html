@@ -1,7 +1,28 @@
 <h1>{{ title }}</h1>
 
-<!-- Display roulette -->
-<app-roulette></app-roulette>
+<div class="container">
+    <!-- Display roulette -->
+    <div>
+        <app-roulette [values]="items" (winner)="set_winner($event)"></app-roulette>
+    </div>
 
-<!-- Get list of items -->
-<app-names></app-names>
+    <!-- Get list of items -->
+    <div>
+        <app-names (update)="update_items($event)"></app-names>
+    </div>
+
+    <!-- Winner display -->
+    <div *ngIf="winner !== ''" class="winner">
+        <div class="summary">
+            <img src="victory.svg" alt="Victory"/>
+            <img src="victory.svg" alt="Victory"/>
+
+            <p>Le gagnant est:</p>
+            <p><u>{{ winner }}</u><p>
+            <input type="button" value="Valider" (click)="reset_winner()" (keydown.enter)="reset_winner()"/>
+        </div>
+
+        <div *ngIf="winner !== ''" class="side"></div>
+        <div *ngIf="winner !== ''" class="side"></div>
+    </div>
+</div>

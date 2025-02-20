@@ -2,6 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap');
 
 
+/* Title */
 h1 {
     text-align: center;
     font-family: "Luckiest Guy", serif;
@@ -11,4 +12,148 @@ h1 {
     background: linear-gradient(red, orange);
     background-clip: text;
     color: transparent;
+}
+
+
+/* Container */
+.container {
+    display: grid;
+
+    @media (max-width: 800px) {
+        grid-template-columns: 1fr;
+    }
+
+    @media (min-width: 801px) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+
+.container > div {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 600px;
+}
+
+
+/* Winner */
+@keyframes appear {
+    from {
+        opacity: 0%;
+    }
+
+    to {
+        opacity: 100%;
+    }
+}
+
+
+@keyframes toleft {
+    from {
+        left: 20px;
+    }
+
+    to {
+        left: 0px;
+    }
+}
+
+
+@keyframes toright {
+    from {
+        right: 20px;
+    }
+
+    to {
+        right: 0px;
+    }
+}
+
+
+
+.winner {
+    position: fixed;
+    z-index: 2;
+
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+
+    text-align: center;
+    font-family: "Luckiest Guy", serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 20px;
+    color: white;
+
+    opacity: 100%;
+    animation: 1s linear forwards appear;
+}
+
+
+.winner > .summary {
+    height: 100%;
+    width: calc(100% - 80px);
+    margin: 0 auto;
+    z-index: 2;
+    position: relative;
+
+    padding: 10px;
+    box-sizing: border-box;
+
+    background: indianred;
+}
+
+
+.winner > .side {
+    background: #9D4947;
+
+    height: calc(100% - 20px);
+    width: 50px;
+    top: 10px;
+
+    z-index: 1;
+    position: absolute;
+}
+
+
+.winner > .side:nth-child(2) {
+    left: 0;
+    animation: 0.7s linear forwards toleft;
+}
+
+
+.winner > .side:nth-child(3) {
+    right: 0;
+    animation: 0.7s linear forwards toright;
+}
+
+
+input {
+    outline: none;
+    background: inherit;
+    border: 2px solid #9D4947;
+    color: #DCDCDC;
+    font: inherit;
+    width: 30%;
+    cursor: pointer;
+}
+
+
+img {
+    height: 75px;
+    margin: auto 0;
+    filter: invert(1);
+}
+
+
+img:nth-child(1) {
+    float: left;
+    transform: translateX(5px) translateY(50%) rotate(-10deg);
+}
+
+
+img:nth-child(2) {
+    float: right;
+    transform: translateX(-5px) translateY(50%) rotate(10deg);
 }

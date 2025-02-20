@@ -8,13 +8,15 @@
 .roulette-container {
     display: grid;
     grid-template-columns: 1fr;
+    position: relative;
 }
 
 
 /* Arrow */
-img {
+.arrow {
     margin: auto;
     transform: translateY(60%);
+    z-index: 1;
 }
 
 
@@ -23,4 +25,16 @@ canvas {
     margin: auto;
     width: 100%;
     aspect-ratio: 1 / 1;
+}
+
+
+/* Spin */
+.spin {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%);
+
+    background: white;
+    mask-image: radial-gradient(circle, white 70%, transparent 70%);
 }
