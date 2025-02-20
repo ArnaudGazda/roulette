@@ -1,0 +1,26 @@
+/**
+ * Draw roulette object
+ * The arrow should be at the top of the roulette, centered
+ */
+
+
+/* Container */
+.roulette-container {
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
+
+/* Arrow */
+img {
+    margin: auto;
+    transform: translateY(60%);
+}
+
+
+/* Roulette / Spin */
+canvas {
+    margin: auto;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+}

@@ -1,0 +1,10 @@
+<div class="name-container">
+    <!-- Name entry -->
+    <input type="text" (keyup.enter)="add_item($event)"/>
+
+    <!-- Display names -->
+    <div *ngFor="let item of items; index as item_index" class="name" [ngStyle]="background(item_index)">
+        <p>{{ item }}</p>
+        <img src="delete.svg" alt="Delete" (click)="delete_item(item_index)" (keydown.enter)="delete_item(item_index)" tabindex="0"/>
+    </div>
+</div>

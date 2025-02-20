@@ -1,0 +1,56 @@
+/**
+ * Style of the input form
+ * This input form is composed of an input and a list of names
+ */
+
+/* Download font */
+@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
+
+
+/* Container */
+.name-container {
+    margin: 10px;    
+}
+
+
+/* Input text */
+input {
+    width: 100%;
+    box-sizing: border-box;
+    outline: none;
+    padding: 10px 20px;
+
+    font-size: 25px;
+    font-family: "Lobster", serif;
+    font-weight: 400;
+    font-style: normal;
+    
+    border: 0;
+    border-bottom: 2px solid black;
+}
+
+
+/* Name display */
+.name {
+    border: 2px solid black;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 10px 0;
+    display: flex;
+
+    font-size: 25px;
+    font-family: "Lobster", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+
+.name > p {
+    margin: 0;
+    flex: 1;
+}
+
+
+.name > img {
+    cursor: pointer;
+}
