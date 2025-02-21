@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NgIf, NgStyle } from '@angular/common';
+import { NgIf } from '@angular/common';
 
 import { RouletteComponent } from './roulette/roulette.component';
 import { NamesComponent } from './names/names.component';
