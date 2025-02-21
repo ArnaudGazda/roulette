@@ -82,13 +82,11 @@ jobs:
               run: ng build --configuration production
 
             - name: Angular application
-              uses: actions/upload-artifact@v4
+              uses: actions/upload-pages-artifact@v3
               with:
                 name: github-pages
                 path: dist/roulette/browser
-                if-no-files-found: error
                 retention-days: 30
-                overwrite: true
 
     # Deploy
     deploy:
