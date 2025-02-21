@@ -16,18 +16,34 @@ function inverse_color(color: string): string {
     return '#000000';
   }
 
-  const red = parseInt(decoded[1], 16);
-  const green = parseInt(decoded[2], 16);
-  const blue = parseInt(decoded[3], 16);
+  const red = parseInt(decoded[1], 16) / 255;
+  const green = parseInt(decoded[2], 16) / 255;
+  const blue = parseInt(decoded[3], 16) / 255;
+
+  // Convert to CYMK
+  const black = (1 - Math.max(red, green, blue));
+
+  if (black === 1) {
+    return '#FFFFFF';  // Return white if color is black
+  }
+
+  const cyan = (1 - red - black) / (1 - black);
+  const magenta = (1 - green - black) / (1 - black);
+  const yellow = (1 - blue - black) / (1 - black);
 
   // Inverse color
-  const new_red = (255 - red).toString(16).padStart(2, '0');
-  const new_green = (255 - green).toString(16).padStart(2, '0');
-  const new_blue = (255 - blue).toString(16).padStart(2, '0');
+  const new_black = black;
+  const new_cyan = 1 - cyan;
+  const new_magenta = 1 - magenta;
+  const new_yellow = 1 - yellow;
+
+  // Convert colors into RGB
+  const new_red = Math.floor(255 * (1 - new_cyan * (1 - new_black) - new_black)).toString(16).padStart(2, '0');
+  const new_green = Math.floor(255 * (1 - new_magenta * (1 - new_black) - new_black)).toString(16).padStart(2, '0');
+  const new_blue = Math.floor(255 * (1 - new_yellow * (1 - new_black) - new_black)).toString(16).padStart(2, '0');
 
   return `#${new_red}${new_green}${new_blue}`;
 }
-
 
 
 @Component({
