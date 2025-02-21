@@ -84,7 +84,7 @@ jobs:
             - name: Angular application
               uses: actions/upload-artifact@v4
               with:
-                name: angular-app
+                name: github-pages
                 path: dist/roulette/browser
                 if-no-files-found: error
                 retention-days: 30
@@ -101,7 +101,7 @@ jobs:
             id-token: write
 
         environment:
-            name: angular-app
+            name: github-pages
             url: ${{ steps.deployment.outputs.page_url }}
 
         steps:
@@ -109,4 +109,4 @@ jobs:
               uses: actions/deploy-pages@v4
               id: deployment
               with:
-                artifact_name: angular-app
+                artifact_name: github-pages
