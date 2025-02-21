@@ -59,16 +59,10 @@ jobs:
                 retention-days: 30
                 overwrite: true
 
-
-    # Deploy
-    deploy:
-        name: Deploy angular application
+    # Build application
+    build:
+        name: Build angular application
         runs-on: ubuntu-latest
-        needs: [lint, tests]
-
-        permissions:
-            pages: write
-            id-token: write
 
         steps:
             - name: Checkout module
@@ -96,7 +90,23 @@ jobs:
                 retention-days: 30
                 overwrite: true
 
+    # Deploy
+    deploy:
+        name: Deploy angular application
+        runs-on: ubuntu-latest
+        needs: [lint, tests, build]
+
+        permissions:
+            pages: write
+            id-token: write
+
+        environment:
+            name: angular-app
+            url: ${{ steps.deployment.outputs.page_url }}
+
+        steps:
             - name: Deploy site
               uses: actions/deploy-pages@v4
+              id: deployment
               with:
                 artifact_name: angular-app
